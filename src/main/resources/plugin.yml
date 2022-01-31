@@ -1,0 +1,7 @@
+name: EasyDuels
+version: '${project.version}'
+main: me.shreyasayyengar.easyduels.EasyDuels
+api-version: 1.18
+prefix: EasyDuels
+author: Shreyas Ayyengar
+description: 'DevRoom trial plugin: A simple duels plugins with optional kits and stats checker.'

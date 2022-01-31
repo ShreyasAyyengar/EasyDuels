@@ -1,0 +1,91 @@
+#   ███████╗ █████╗  ██████╗██╗   ██╗██████╗ ██╗   ██╗███████╗██╗      ██████╗
+#   ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝██╔══██╗██║   ██║██╔════╝██║     ██╔════╝
+#   █████╗  ███████║╚█████╗  ╚████╔╝ ██║  ██║██║   ██║█████╗  ██║     ╚█████╗
+#   ██╔══╝  ██╔══██║ ╚═══██╗  ╚██╔╝  ██║  ██║██║   ██║██╔══╝  ██║      ╚═══██╗
+#   ███████╗██║  ██║██████╔╝   ██║   ██████╔╝╚██████╔╝███████╗███████╗██████╔╝
+#   ╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝   ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═════╝
+
+MySQL:
+  username: ''
+  password: ''
+  database: ''
+  host: ''
+  port: 3306
+
+spawns:
+  spawn1: ''
+  spawn2: ''
+
+
+default-kit: warrior
+
+kits:
+  warrior:
+    armor_content:
+      helmet:
+        material: LEATHER_HELMET
+        amount: 1
+
+        chestplate:
+          material: LEATHER_CHESTPLATE
+          amount: 1
+
+        leggings:
+          material: LEATHER_CHESTPLATE
+            amount: 1
+
+        boots:
+          material: LEATHER_BOOTS
+          amount: 1
+
+    inventory_content:
+      0:
+        material: WOODEN_SWORD
+        amount: 1
+
+  knight:
+    armor_content:
+      helmet:
+        material: IRON_HELMET
+        amount: 1
+      chestplate:
+        material: IRON_CHESTPLATE
+        amount: 1
+      leggings:
+        material: IRON_LEGGINGS
+        amount: 1
+      boots:
+        material: IRON_BOOTS
+        amount: 1
+
+    inventory_content:
+      0:
+        material: IRON_SWORD
+        amount: 1
+
+  legend:
+    armor_content:
+      helmet:
+        material: DIAMOND_HELMET
+        amount: 1
+      chestplate:
+        material: DIAMOND_CHESTPLATE
+        amount: 1
+      leggings:
+        material: DIAMOND_LEGGINGS
+        amount: 1
+      boots:
+        material: DIAMOND_BOOTS
+        amount: 1
+
+    inventory_content:
+      0:
+        material: DIAMOND_SWORD
+        amount: 1
+
+system-messages:
+  invite: "{player} has requested to duel you with the kit {kit}!"
+  accepted: "You have accepted the duel and the match will start shortly"
+  starting: "{seconds} left until start!"
+  finished: 
+
