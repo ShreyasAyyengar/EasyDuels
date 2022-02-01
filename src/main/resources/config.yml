@@ -13,8 +13,22 @@ MySQL:
   port: 3306
 
 spawns:
-  spawn1: ''
-  spawn2: ''
+  spawn1:
+    ==: org.bukkit.Location
+      world: world
+      x: -31.5
+      y: 65
+      z: 0.5
+      pitch: 0
+      yaw: -90
+  spawn2:
+    ==: org.bukkit.Location
+      world: world
+      x: 31.5
+      y: 65
+      z: 0.5
+      pitch: 0
+      yaw: 90
 
 
 default-kit: warrior
@@ -83,9 +97,12 @@ kits:
         material: DIAMOND_SWORD
         amount: 1
 
+
 system-messages:
   invite: "{player} has requested to duel you with the kit {kit}!"
   accepted: "You have accepted the duel and the match will start shortly"
   starting: "{seconds} left until start!"
-  finished: 
+  finished: "That match has finished! You {result}"
+  no-request: "You do not have a request from that player!"
+  already-requested: "Please wait before sending that player another duel request"
 
