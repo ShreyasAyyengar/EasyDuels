@@ -5,3 +5,8 @@ api-version: 1.17
 prefix: EasyDuels
 author: Shreyas Ayyengar
 description: 'DevRoom trial plugin: A simple duels plugins with optional kits and stats checker.'
+
+commands:
+  duel:
+  accept:
+  stats:

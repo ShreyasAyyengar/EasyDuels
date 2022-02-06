@@ -15,11 +15,13 @@ public class DuelRequest {
     private final UUID requester;
     private final UUID target;
     private final String kit;
+    private boolean hasAccepted;
 
     public DuelRequest(UUID requester, UUID target, String kit) {
         this.requester = requester;
         this.target = target;
         this.kit = kit;
+        this.hasAccepted = false;
 
         sendMessages();
     }
@@ -28,7 +30,7 @@ public class DuelRequest {
         Bukkit.getPlayer(requester).sendMessage(Utility.colourise("&aYou have requested " + Bukkit.getPlayer(target).getName() + " to a duel with the kit: &6" + kit));
 
 
-        TextComponent main = new TextComponent("§d" + Bukkit.getPlayer(requester).getName() + " has requested to duel you with the kit: &6" + kit);
+        TextComponent main = new TextComponent("§d" + Bukkit.getPlayer(requester).getName() + " has requested to duel you with the kit: §6" + kit + "\n");
         TextComponent clickHere = new TextComponent("§e[Click Here To Accept The Duel]");
         clickHere.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§6Click here to accept the duel with " + Bukkit.getPlayer(requester).getName() + "! (60 secs)")));
         clickHere.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/accept " + Bukkit.getPlayer(requester).getName()));
@@ -37,7 +39,20 @@ public class DuelRequest {
 
     }
 
-    public void cancel() {
+    public void cancel(boolean wasTimeout) {
+        if (wasTimeout) {
+
+            String msg = Utility.colourise("&cThe duel request expired due to time or because a player left the game!");
+            if (Bukkit.getPlayer(target) != null) {
+                Bukkit.getPlayer(target).sendMessage(msg);
+            }
+
+            if (Bukkit.getPlayer(requester) != null) {
+                Bukkit.getPlayer(requester).sendMessage(msg);
+            }
+
+        }
+
         EasyDuels.getInstance().getGameManager().getRequests().remove(this);
     }
 
@@ -48,5 +63,14 @@ public class DuelRequest {
 
     public UUID getTarget() {
         return target;
+    }
+
+    public boolean hasAccepted() {
+        return hasAccepted;
+    }
+
+    public void approve() {
+        EasyDuels.getInstance().getGameManager().createGame(requester, target, kit);
+        EasyDuels.getInstance().getGameManager().getRequests().remove(this);
     }
 }

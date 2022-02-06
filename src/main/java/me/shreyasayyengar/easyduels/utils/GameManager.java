@@ -3,11 +3,13 @@ package me.shreyasayyengar.easyduels.utils;
 import me.shreyasayyengar.easyduels.EasyDuels;
 import me.shreyasayyengar.easyduels.objects.DuelRequest;
 import me.shreyasayyengar.easyduels.objects.Game;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class GameManager {
 
@@ -27,6 +29,12 @@ public class GameManager {
         return null;
     }
 
+    public void createGame(UUID player1, UUID player2, String kit) {
+        Game game = new Game(player1, player2, kit);
+        games.add(game);
+        game.startCounter();
+    }
+
     public boolean isPlaying(Player player) {
 
         for (Game game : games) {
@@ -43,11 +51,28 @@ public class GameManager {
         requests.add(request);
 
         new BukkitRunnable() {
+
+            int count = 0;
+
             @Override
             public void run() {
-                request.cancel();
+
+                if (Bukkit.getPlayer(request.getRequester()) == null || Bukkit.getPlayer(request.getTarget()) == null) {
+                    request.cancel(true);
+                    cancel();
+                }
+                if (request.hasAccepted()) {
+                    request.cancel(false);
+                    cancel();
+                }
+
+                if (count >= 60) {
+                    request.cancel(true);
+                    cancel();
+                }
+                count++;
             }
-        }.runTaskLater(EasyDuels.getInstance(), 1200L);
+        }.runTaskTimer(EasyDuels.getInstance(), 0L, 20L);
     }
 
     public boolean hasRequest(Player player, Player from) {
@@ -64,5 +89,9 @@ public class GameManager {
 
     public Set<DuelRequest> getRequests() {
         return requests;
+    }
+
+    public void removeGame(Game game) {
+        games.remove(game);
     }
 }

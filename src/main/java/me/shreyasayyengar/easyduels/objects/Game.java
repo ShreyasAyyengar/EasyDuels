@@ -69,11 +69,12 @@ public class Game {
                         return;
                     }
                     if (seconds[0] > 0) {
-                        allPlayers.forEach(uuid -> Bukkit.getPlayer(uuid).sendMessage(Utility.colourise("&c" + seconds[0] + " &e until the game begins!")));
+                        allPlayers.forEach(uuid -> Bukkit.getPlayer(uuid).sendMessage(Utility.colourise("&c" + seconds[0] + " &euntil the game begins!")));
                     }
 
                     if (seconds[0] == 0) {
                         startGame();
+                        cancel();
                     }
 
                     seconds[0]--;
@@ -94,9 +95,6 @@ public class Game {
         getCBPlayer2().teleport(ConfigManager.getLocation(false));
 
         setInventory(kit);
-
-        SQLUtils.addGame();
-
     }
 
     private void setInventory(String kit) {
@@ -104,8 +102,13 @@ public class Game {
         players.add(getCBPlayer1());
         players.add(getCBPlayer2());
 
-        String acKey = kit + ".armor_content.";
-        String invKey = kit + ".inventory_content.";
+        System.out.println(kit);
+
+        String acKey = "kits." + kit + ".armor_content.";
+        String invKey = "kits." + kit + ".inventory_content.";
+
+        System.out.println(config.getStringList(acKey + "boots.material"));
+
 
         ItemStack[] armorContents = {
                 new ItemStack(Material.valueOf(config.getString(acKey + "boots.material")), config.getInt(acKey + "boots.amount")),
@@ -139,5 +142,45 @@ public class Game {
 
     public List<UUID> getAllPlayers() {
         return allPlayers;
+    }
+
+    public void win(UUID loser) {
+
+        if (loser.equals(player1)) {
+            finishGame(player1, player2);
+        } else {
+            finishGame(player2, player1);
+        }
+
+    }
+
+    private void finishGame(UUID player2, UUID player1) {
+        if (Bukkit.getPlayer(player2) != null) {
+            Player lostPlayer = Bukkit.getPlayer(player2);
+            Player wonPlayer = Bukkit.getPlayer(player1);
+
+            lostPlayer.sendMessage(Utility.colourise("&cYou lost the duel!"));
+            lostPlayer.sendTitle(Utility.colourise("&c&lGame Over!"), Utility.colourise("&7You lost the duel"));
+            SQLUtils.addStatistic(StatType.LOST, lostPlayer.getUniqueId());
+            SQLUtils.addStatistic(StatType.DEATH, lostPlayer.getUniqueId());
+
+            wonPlayer.sendMessage(Utility.colourise("&aYou won the duel!"));
+            wonPlayer.sendTitle(Utility.colourise("&6&lVictory!"), Utility.colourise("&aYou won the duel"));
+            SQLUtils.addStatistic(StatType.WIN, wonPlayer.getUniqueId());
+            SQLUtils.addStatistic(StatType.KILL, wonPlayer.getUniqueId());
+        }
+
+        teleportPlayers();
+
+        EasyDuels.getInstance().getGameManager().removeGame(this);
+    }
+
+    private void teleportPlayers() {
+
+        for (UUID allPlayer : allPlayers) {
+            if (Bukkit.getPlayer(allPlayer) != null) {
+                Bukkit.getPlayer(allPlayer).teleport(ConfigManager.getLocation("main-spawn"));
+            }
+        }
     }
 }

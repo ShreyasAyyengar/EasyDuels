@@ -33,7 +33,12 @@ public class DuelCommand implements CommandExecutor {
     private void handleRequest(Player sender, String opponent, String kit) {
 
         if (Bukkit.getPlayer(opponent) == null) {
-            sender.sendMessage(Utility.colourise("&cNo player wth the name " + opponent.toUpperCase() + " was found :<"));
+            sender.sendMessage(Utility.colourise("&cNo player with the name &b'" + opponent + "'&c was found :<"));
+            return;
+        }
+
+        if (sender.getName().equalsIgnoreCase(opponent)) {
+            sender.sendMessage(Utility.colourise("&cYou cannot duel yourself!"));
             return;
         }
 
@@ -42,18 +47,23 @@ public class DuelCommand implements CommandExecutor {
 
             ConfigManager.getKits().forEach(option -> sender.sendMessage(Utility.colourise("&b  - " + option)));
             return;
+
         }
 
         if (EasyDuels.getInstance().getGameManager().isPlaying(sender)) {
             sender.sendMessage(Utility.colourise("&cYou cannot duel someone while already in a duel!"));
             return;
+
         }
 
-        EasyDuels.getInstance().getGameManager().getRequests().forEach(request -> {
+
+        for (DuelRequest request : EasyDuels.getInstance().getGameManager().getRequests()) {
+
             if (request.getRequester().equals(sender.getUniqueId())) {
                 sender.sendMessage(Utility.colourise("&cYou already have a pending duel request to someone else! Please wait for this to expire!"));
+                return;
             }
-        });
+        }
 
         EasyDuels.getInstance().getGameManager().addRequest(new DuelRequest(sender.getUniqueId(), Bukkit.getPlayer(opponent).getUniqueId(), kit));
 

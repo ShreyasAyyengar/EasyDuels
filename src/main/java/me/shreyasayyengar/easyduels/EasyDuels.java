@@ -1,6 +1,11 @@
 package me.shreyasayyengar.easyduels;
 
+import me.shreyasayyengar.easyduels.commands.AcceptCommand;
+import me.shreyasayyengar.easyduels.commands.DuelCommand;
+import me.shreyasayyengar.easyduels.commands.StatsCommand;
 import me.shreyasayyengar.easyduels.database.MySQL;
+import me.shreyasayyengar.easyduels.events.GameListener;
+import me.shreyasayyengar.easyduels.events.Join;
 import me.shreyasayyengar.easyduels.utils.ConfigManager;
 import me.shreyasayyengar.easyduels.utils.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,17 +24,16 @@ public final class EasyDuels extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        ConfigManager.init(this);
         registerCommands();
         registerEvents();
         initMySQL();
-        ConfigManager.init(this);
         manager = new GameManager();
         getLogger().info("Plugin started with no errors present!");
 
     }
 
     private void initMySQL() {
-
         try {
 
             database = new MySQL(
@@ -43,9 +47,9 @@ public final class EasyDuels extends JavaPlugin {
                     "    uuid      varchar(36)   null," +
                     "    winstreak int default 0 null," +
                     "    wins      int default 0 null," +
-                    "    losses    int default 0 null," +
                     "    kills     int default 0 null," +
-                    "    shoots    int default 0 null" +
+                    "    losses    int default 0 null," +
+                    "    deaths    int default 0 null" +
                     ");").executeUpdate();
 
         } catch (SQLException x) {
@@ -54,11 +58,14 @@ public final class EasyDuels extends JavaPlugin {
     }
 
     private void registerEvents() {
-
+        this.getServer().getPluginManager().registerEvents(new GameListener(), this);
+        this.getServer().getPluginManager().registerEvents(new Join(), this);
     }
 
     private void registerCommands() {
-
+        this.getCommand("duel").setExecutor(new DuelCommand());
+        this.getCommand("accept").setExecutor(new AcceptCommand());
+        this.getCommand("stats").setExecutor(new StatsCommand());
     }
 
     @Override

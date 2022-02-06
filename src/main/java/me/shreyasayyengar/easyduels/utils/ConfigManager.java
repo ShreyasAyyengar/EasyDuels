@@ -29,7 +29,11 @@ public class ConfigManager {
     }
 
     public static Location getLocation(boolean first) {
-        return first ? main.getConfig().getLocation("spawns.spawn1") : main.getConfig().getLocation("spwans.spawn2");
+        return first ? main.getConfig().getLocation("spawns.spawn1") : main.getConfig().getLocation("spawns.spawn2");
+    }
+
+    public static Location getLocation(String path) {
+        return main.getConfig().getLocation("spawns." + path);
     }
 
     public static Set<String> getKits() {

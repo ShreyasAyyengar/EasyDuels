@@ -15,20 +15,28 @@ MySQL:
 spawns:
   spawn1:
     ==: org.bukkit.Location
-      world: world
-      x: -31.5
-      y: 65
-      z: 0.5
-      pitch: 0
-      yaw: -90
+    world: world
+    x: 31.5
+    y: 65.0
+    z: 0.5
+    pitch: 0.0
+    yaw: 90.0
   spawn2:
     ==: org.bukkit.Location
-      world: world
-      x: 31.5
-      y: 65
-      z: 0.5
-      pitch: 0
-      yaw: 90
+    world: world
+    x: -31.5
+    y: 65.0
+    z: 0.5
+    pitch: 0.0
+    yaw: -90.0
+  main-spawn:
+    ==: org.bukkit.Location
+    world: world
+    x: 0
+    y: 100
+    z: 0
+    pitch: 0
+    yaw: 0
 
 
 default-kit: warrior
@@ -40,17 +48,17 @@ kits:
         material: LEATHER_HELMET
         amount: 1
 
-        chestplate:
-          material: LEATHER_CHESTPLATE
-          amount: 1
+      chestplate:
+        material: LEATHER_CHESTPLATE
+        amount: 1
 
-        leggings:
-          material: LEATHER_CHESTPLATE
-            amount: 1
+      leggings:
+        material: LEATHER_CHESTPLATE
+        amount: 1
 
-        boots:
-          material: LEATHER_BOOTS
-          amount: 1
+      boots:
+        material: LEATHER_BOOTS
+        amount: 1
 
     inventory_content:
       0:
@@ -103,6 +111,6 @@ system-messages:
   accepted: "You have accepted the duel and the match will start shortly"
   starting: "{seconds} left until start!"
   finished: "That match has finished! You {result}"
-  no-request: "You do not have a request from that player!"
-  already-requested: "Please wait before sending that player another duel request"
+  no-request: "&cYou do not have a request from that player!"
+  already-requested: "&cPlease wait before sending that player another duel request"
 
